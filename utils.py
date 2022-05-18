@@ -11,3 +11,6 @@ class WebCam():
 
     def getcamattributes(self):
         return self.width, self.height
+
+
+
