@@ -37,7 +37,4 @@ class ModelDetection:
                     # cv2.putText(image, label, (startX, startY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (36, 255, 12), 2)
                 except:
                     continue
-        if my_box[0]==0:
-            return image,image
-        else:
-            return image,my_box
+        return image, my_box
