@@ -11,7 +11,7 @@ cap = WebCam()
 width, height = cap.getcamattributes()
 
 my_win = Window('FaceApp', f'{int(width - 100)}x{int(height - 100)}')
-extra_funcs = my_win.create_child('second')
+additive_win = my_win.create_child('second')
 my_model = ModelDetection((width, height), 'model_path/ssdcaffe')
 
 
@@ -22,8 +22,17 @@ def frame_to_img(frame_pic):
     return imgtk
 
 
+def video_preprocessing(vid=cap.camera,flag=additive_win.choice):
+    ret, image = vid.read()
+    frame, myface = my_model.video_prediction(ret,image.copy())
+    if flag.get()==1:
+        return frame
+    elif flag.get()==0:
+        return image
+
+
 def show_frame(window=my_win):
-    frame, myface = my_model.video_prediction(cap.camera)
+    frame = video_preprocessing()
     imgtk = frame_to_img(frame)
     window.lmain.imgtk = imgtk
     window.lmain.configure(image=imgtk)

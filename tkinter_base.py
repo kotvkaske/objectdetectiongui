@@ -26,4 +26,10 @@ class ChildWindow:
         self.window.title(title_str)
         self.window.geometry(geometry_size)
         self.label = Label(self.window)
+        self.choice = IntVar(value=1)
+        self.draw_widgets()
 
+    def draw_widgets(self):
+        Button(self.window, width=30, height=10, text='press').pack()
+        Radiobutton(self.window, text='Empty', variable=self.choice, value=0).pack()
+        Radiobutton(self.window, text='Detection', variable=self.choice, value=1).pack()

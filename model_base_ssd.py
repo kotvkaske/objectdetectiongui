@@ -13,13 +13,8 @@ class ModelDetection:
         self.model_input_size = model_input_size
         self.image_size = image_size
 
-    def video_prediction(self, vid):
-        ret, image = vid.read()
+    def video_prediction(self, ret,image):
         blob = cv2.dnn.blobFromImage(image, 1.0, (300, 300), crop=False)
-        # fig = plt.figure(figsize=(14, 14))
-        # rows = 3
-        # cols = 2
-        # axes = []
         w = self.image_size[0]
         h = self.image_size[1]
         self.model.setInput(blob)
