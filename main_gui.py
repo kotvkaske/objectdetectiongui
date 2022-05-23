@@ -17,10 +17,12 @@ my_model = ModelDetection((width, height), 'model_path/ssdcaffe')
 
 Deeplabm = DeepLabResnet()
 Deeplabm.load_state_dict(torch.load('deeplab_weights.pt',map_location=torch.device(DEVICE)))
+Deeplabm = Deeplabm.to(DEVICE)
 Deeplabm.eval()
 
 segnet = SegNet()
-segnet.load_state_dict(torch.load('segnet_finalx2aug.pth',map_location=torch.device(DEVICE)))
+segnet.load_state_dict(torch.load('segnet_weights.pt',map_location=torch.device(DEVICE)))
+segnet = segnet.to(DEVICE)
 segnet.eval()
 
 
@@ -36,7 +38,7 @@ def video_preprocessing(vid=cap.camera,flag=additive_win.choice):
     ret, image = vid.read()
 
     if flag.get()==2:
-        return segm_model.foreground_extraction(image)
+        return Deeplabm.foreground_extraction(image)
     elif flag.get()==0:
         return image
     elif flag.get()==1:
