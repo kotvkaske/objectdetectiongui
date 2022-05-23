@@ -1,7 +1,8 @@
 from tkinter import *
 import torch
 from tkinter_base import Window
-from model_base_ssd import *
+from detection_models import *
+from segmentation_models import *
 from utils import WebCam
 import PIL
 from PIL import Image, ImageTk
