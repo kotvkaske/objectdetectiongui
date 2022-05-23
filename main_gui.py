@@ -14,9 +14,16 @@ DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cp
 my_win = Window('FaceApp', f'{int(width - 100)}x{int(height - 100)}')
 additive_win = my_win.create_child('second')
 my_model = ModelDetection((width, height), 'model_path/ssdcaffe')
-segm_model = DeepLabResnet()
-segm_model.load_state_dict(torch.load('deeplab_weights.pt',map_location=torch.device(DEVICE)))
-segm_model.eval()
+
+Deeplabm = DeepLabResnet()
+Deeplabm.load_state_dict(torch.load('deeplab_weights.pt',map_location=torch.device(DEVICE)))
+Deeplabm.eval()
+
+segnet = SegNet()
+segnet.load_state_dict(torch.load('segnet_finalx2aug.pth',map_location=torch.device(DEVICE)))
+segnet.eval()
+
+
 
 def frame_to_img(frame_pic):
     cv2image = cv2.cvtColor(frame_pic, cv2.COLOR_BGR2RGBA)
