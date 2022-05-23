@@ -9,12 +9,12 @@ import cv2
 from torchvision import models
 cap = WebCam()
 width, height = cap.getcamattributes()
-
+DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 my_win = Window('FaceApp', f'{int(width - 100)}x{int(height - 100)}')
 additive_win = my_win.create_child('second')
 my_model = ModelDetection((width, height), 'model_path/ssdcaffe')
 segm_model = DeepLabResnet()
-segm_model.load_state_dict(torch.load('deeplab_weights.pt',map_location=torch.device('cpu')))
+segm_model.load_state_dict(torch.load('deeplab_weights.pt',map_location=torch.device(DEVICE)))
 segm_model.eval()
 
 def frame_to_img(frame_pic):
@@ -26,12 +26,14 @@ def frame_to_img(frame_pic):
 
 def video_preprocessing(vid=cap.camera,flag=additive_win.choice):
     ret, image = vid.read()
-    #frame, myface = my_model.face_detextion(ret,image.copy())
-    frame_semg = segm_model.foreground_extraction(image)
-    if flag.get()==1:
-        return frame_semg
+
+    if flag.get()==2:
+        return segm_model.foreground_extraction(image)
     elif flag.get()==0:
         return image
+    elif flag.get()==1:
+        frame, myface = my_model.face_detection(ret,image.copy())
+        return frame
 
 
 def show_frame(window=my_win):

@@ -15,7 +15,7 @@ class ModelDetection:
         self.model_input_size = model_input_size
         self.image_size = image_size
 
-    def face_detextion(self, ret, image):
+    def face_detection(self, ret, image):
         blob = cv2.dnn.blobFromImage(image, 1.0, (300, 300), crop=False)
         w = self.image_size[0]
         h = self.image_size[1]

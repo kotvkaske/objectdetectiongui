@@ -33,3 +33,4 @@ class ChildWindow:
         Button(self.window, width=30, height=10, text='press').pack()
         Radiobutton(self.window, text='Empty', variable=self.choice, value=0).pack()
         Radiobutton(self.window, text='Detection', variable=self.choice, value=1).pack()
+        Radiobutton(self.window, text='Segmentation', variable=self.choice, value=2).pack()
