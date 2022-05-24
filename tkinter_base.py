@@ -26,11 +26,20 @@ class ChildWindow:
         self.window.title(title_str)
         self.window.geometry(geometry_size)
         self.label = Label(self.window)
-        self.choice = IntVar(value=1)
+        self.choice = IntVar(value=0)
+        self.extra_choice = IntVar(value=0)
         self.draw_widgets()
 
     def draw_widgets(self):
-        Button(self.window, width=30, height=10, text='press').pack()
         Radiobutton(self.window, text='Empty', variable=self.choice, value=0).pack()
         Radiobutton(self.window, text='Detection', variable=self.choice, value=1).pack()
-        Radiobutton(self.window, text='Segmentation', variable=self.choice, value=2).pack()
+        seg_button = Radiobutton(self.window, text='Segmentation', variable=self.choice, value=2)
+        seg_button.pack()
+        men = Menubutton(self.window,text='Model_Type')
+        men.menu = Menu(men)
+        men['menu'] = men.menu
+        men.menu.add_radiobutton(label = 'SegNet',variable= self.extra_choice,value=0)
+        men.menu.add_radiobutton(label='DeepLabv3Resnet50', variable=self.extra_choice, value=1)
+        men.pack()
+
+
