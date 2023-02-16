@@ -1,9 +1,5 @@
 import numpy as np
 import cv2
-from torch import nn
-from imutils.video import FPS
-from torchvision import models
-import torch
 
 class ModelDetection:
     def __init__(self, image_size: tuple, model_path='model_path', model_input_size=300):
@@ -21,6 +17,7 @@ class ModelDetection:
         h = self.image_size[1]
         self.model.setInput(blob)
         detections = self.model.forward()
+        my_box = np.array([1,1,1,1])
         for i in range(0, detections.shape[2]):
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")

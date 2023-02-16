@@ -1,1 +1,6 @@
-l
+tk
+opencv-python
+pytorch
+torchvision
+numpy
+Pillow

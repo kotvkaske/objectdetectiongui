@@ -1,12 +1,12 @@
-import os
 import torch
 import torch.nn.functional as F
 import cv2
 from torch import nn
-from imutils.video import FPS
 from torchvision import models
 import numpy as np
-DEVICE=torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+
+DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+
 
 class SegNet(nn.Module):
     """Архитектура SegNet для бинарной сегментации (0 - фон, 1 - человек)"""

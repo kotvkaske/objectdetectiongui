@@ -46,7 +46,6 @@ def video_preprocessing(vid=cap.camera, flag=additive_win.choice, extra_flag=add
             return Deeplabm.foreground_extraction(image)
 
 
-
 def show_frame(window=my_win):
     frame = video_preprocessing()
     imgtk = frame_to_img(frame)
@@ -55,5 +54,6 @@ def show_frame(window=my_win):
     window.lmain.after(10, show_frame)
 
 
-show_frame()
-my_win.run()
+if __name__ == 'main':
+    show_frame()
+    my_win.run()
