@@ -9,10 +9,9 @@ import cv2
 cap = WebCam()
 width, height = cap.getcamattributes()
 DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-print(DEVICE)
 my_win = Window('FaceApp', f'{int(width - 100)}x{int(height - 100)}')
 additive_win = my_win.create_child('second')
-my_model = ModelDetection((width, height), '../model_path/ssdcaffe')
+my_model = SSD_Caffe((width, height), '../model_path/ssdcaffe')
 
 Deeplabm = DeepLabResnet()
 Deeplabm.load_state_dict(torch.load('../model_path/deeplab_weights.pt', map_location=torch.device(DEVICE)))
@@ -37,13 +36,14 @@ def video_preprocessing(vid=cap.camera, flag=additive_win.choice, extra_flag=add
     if flag.get() == 0:
         return image
     elif flag.get() == 1:
-        frame, myface = my_model.face_detection(image.copy())
+        frame, myface = my_model.detect(image.copy())
         return frame
     elif flag.get() == 2:
         if extra_flag.get() == 0:
-            return segnet.foreground_extraction(image)
-        elif extra_flag.get() == 1:
             return Deeplabm.foreground_extraction(image)
+
+        elif extra_flag.get() == 1:
+            return segnet.foreground_extraction(image)
 
 
 def show_frame(window=my_win):
@@ -54,6 +54,6 @@ def show_frame(window=my_win):
     window.lmain.after(10, show_frame)
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     show_frame()
     my_win.run()

@@ -1,8 +1,15 @@
 import numpy as np
 import cv2
+from abc import ABC, abstractmethod
 
 
-class ModelDetection:
+class FaceDetector(ABC):
+    @abstractmethod
+    def detect(self, image, display_confidence=True):
+        pass
+
+
+class SSD_Caffe(FaceDetector):
     def __init__(self, image_size: tuple, model_path='model_path', model_input_size=300):
         self.model_path = model_path
         self.model = cv2.dnn.readNetFromCaffe(f'{self.model_path}/architecture.txt',
@@ -12,7 +19,7 @@ class ModelDetection:
         self.model_input_size = model_input_size
         self.image_size = image_size
 
-    def face_detection(self, image, display_confidence=True):
+    def detect(self, image, display_confidence=True):
         blob = cv2.dnn.blobFromImage(image, 1.0, (300, 300), crop=False)
         w = self.image_size[0]
         h = self.image_size[1]
