@@ -1,7 +1,7 @@
 from tkinter_base import Window
-from detection_models import *
-from segmentation_models import *
-from utils import WebCam
+from ml.detection_models import *
+from ml.segmentation_models import *
+from guiservice.utils import WebCam
 import PIL
 from PIL import Image, ImageTk
 import cv2
@@ -12,15 +12,15 @@ DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cp
 print(DEVICE)
 my_win = Window('FaceApp', f'{int(width - 100)}x{int(height - 100)}')
 additive_win = my_win.create_child('second')
-my_model = ModelDetection((width, height), 'model_path/ssdcaffe')
+my_model = ModelDetection((width, height), '../model_path/ssdcaffe')
 
 Deeplabm = DeepLabResnet()
-Deeplabm.load_state_dict(torch.load('model_path/deeplab_weights.pt', map_location=torch.device(DEVICE)))
+Deeplabm.load_state_dict(torch.load('../model_path/deeplab_weights.pt', map_location=torch.device(DEVICE)))
 Deeplabm = Deeplabm.to(DEVICE)
 Deeplabm.eval()
 
 segnet = SegNet()
-segnet.load_state_dict(torch.load('model_path/segnet_weights.pt', map_location=torch.device(DEVICE)))
+segnet.load_state_dict(torch.load('../model_path/segnet_weights.pt', map_location=torch.device(DEVICE)))
 segnet = segnet.to(DEVICE)
 segnet.eval()
 

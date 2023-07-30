@@ -1,6 +1,6 @@
 tk
 opencv-python
-pytorch
+torch
 torchvision
 numpy
 Pillow
