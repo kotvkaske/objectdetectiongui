@@ -1,5 +1,5 @@
 from tkinter_base import Window
-from ml.detection_models import *
+from ml.models.detection.detection_models import *
 from ml.segmentation_models import *
 from guiservice.utils import WebCam
 import PIL

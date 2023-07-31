@@ -20,7 +20,7 @@ class SSD_Caffe(FaceDetector):
         self.image_size = image_size
 
     def detect(self, image, display_confidence=True):
-        blob = cv2.dnn.blobFromImage(image, 1.0, (300, 300), crop=False)
+        blob = cv2.dnn.blobFromImage(image, 1.0, (self.model_input_size, self.model_input_size), crop=False)
         w = self.image_size[0]
         h = self.image_size[1]
         self.model.setInput(blob)
