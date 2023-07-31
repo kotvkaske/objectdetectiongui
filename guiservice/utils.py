@@ -9,7 +9,7 @@ class WebCam():
         self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
         self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
 
-    def getcamattributes(self):
+    def GetCameraAttributes(self):
         return self.width, self.height
 
 
