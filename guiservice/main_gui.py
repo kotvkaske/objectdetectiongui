@@ -46,7 +46,6 @@ def video_preprocessing(vid=cap.camera, flag=additive_win.choice, extra_flag=add
     #     return frame
     elif flag.get() == 2:
         if extra_flag.get() == 0:
-
             return model.segment(image)
             # return Deeplabm.foreground_extraction(image)
 
