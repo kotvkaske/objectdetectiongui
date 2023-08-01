@@ -6,6 +6,7 @@ from torchvision import models
 import numpy as np
 from abc import ABC, abstractmethod
 
+
 class SegNet(nn.Module):
     """Архитектура SegNet для бинарной сегментации (0 - фон, 1 - человек)"""
 
@@ -206,17 +207,3 @@ class SegNet(nn.Module):
         x_00d = self.decoder_convtr_00(x_01d)
 
         return x_00d
-
-    def foreground_extraction(self, picture):
-        w = picture.shape[1]
-        h = picture.shape[0]
-        pic = picture
-
-        pic = cv2.resize(pic, dsize=(320, 240), interpolation=cv2.INTER_CUBIC).transpose(2, 0, 1)
-        pic = torch.tensor(pic) / 255
-        result = self.forward(pic.to(DEVICE).unsqueeze(dim=0)).squeeze(dim=0).detach().cpu()
-        result = 255 * (result > 0.5).squeeze(dim=0).numpy().astype(np.uint8)
-        pic = np.array(255 * pic).astype(np.uint8).transpose(1, 2, 0)
-        pic[result == 0] = 0
-        pic = cv2.resize(pic, dsize=(w, h), interpolation=cv2.INTER_CUBIC)
-        return pic

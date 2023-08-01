@@ -1,6 +1,9 @@
 tk
-opencv-python
-torch
-torchvision
-numpy
-Pillow
+opencv-python~=4.5.5.64
+torch~=2.0.1
+torchvision~=0.11.3
+numpy~=1.22.3
+Pillow~=9.0.1
+onnxruntime~=1.15.1
+onnx~=1.14.0
+future~=0.18.2

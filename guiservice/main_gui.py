@@ -5,10 +5,8 @@ from PIL import Image, ImageTk
 import cv2
 import onnxruntime
 import torch
-
-def to_numpy(tensor):
-    return tensor.detach().cpu().numpy() if tensor.requires_grad else tensor.cpu().numpy()
-
+import numpy as np
+from ml.models.segmentation.BaseSegmentor import *
 
 cap = WebCam()
 width, height = cap.GetCameraAttributes()
@@ -22,7 +20,7 @@ additive_win = my_win.create_child('second')
 # Deeplabm = Deeplabm.to(DEVICE)
 # Deeplabm.eval()
 #
-Deeplabm = ort_session = onnxruntime.InferenceSession("../dplmodel.onnx")
+model = BodySegmentor('../dplmodel.onnx')
 
 
 # segnet = SegNet()
@@ -48,9 +46,8 @@ def video_preprocessing(vid=cap.camera, flag=additive_win.choice, extra_flag=add
     #     return frame
     elif flag.get() == 2:
         if extra_flag.get() == 0:
-            ort_inputs = {ort_session.get_inputs()[0].name: to_numpy(torch.tensor(image)/255)}
-            ort_outs = ort_session.run(None, ort_inputs)
-            return ort_outs[0]
+
+            return model.segment(image)
             # return Deeplabm.foreground_extraction(image)
 
     #     elif extra_flag.get() == 1:
