@@ -4,7 +4,7 @@ import cv2
 from torch import nn
 from torchvision import models
 import numpy as np
-from abc import ABC, abstractmethod
+# from BaseSegmentor import BodySegmentor
 
 
 class DeepLabResnet(nn.Module):

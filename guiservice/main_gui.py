@@ -3,6 +3,12 @@ from guiservice.utils import WebCam
 import PIL
 from PIL import Image, ImageTk
 import cv2
+import onnxruntime
+import torch
+
+def to_numpy(tensor):
+    return tensor.detach().cpu().numpy() if tensor.requires_grad else tensor.cpu().numpy()
+
 
 cap = WebCam()
 width, height = cap.GetCameraAttributes()
@@ -16,6 +22,9 @@ additive_win = my_win.create_child('second')
 # Deeplabm = Deeplabm.to(DEVICE)
 # Deeplabm.eval()
 #
+Deeplabm = ort_session = onnxruntime.InferenceSession("../dplmodel.onnx")
+
+
 # segnet = SegNet()
 # segnet.load_state_dict(torch.load('../model_path/segnet_weights.pt', map_location=torch.device(DEVICE)))
 # segnet = segnet.to(DEVICE)
@@ -31,15 +40,19 @@ def frame_to_img(frame_pic):
 
 def video_preprocessing(vid=cap.camera, flag=additive_win.choice, extra_flag=additive_win.extra_choice):
     ret, image = vid.read()
+
     if flag.get() == 0:
         return image
     # elif flag.get() == 1:
     #     frame, myface = my_model.detect(image.copy())
     #     return frame
-    # elif flag.get() == 2:
-    #     if extra_flag.get() == 0:
-    #         return Deeplabm.foreground_extraction(image)
-    #
+    elif flag.get() == 2:
+        if extra_flag.get() == 0:
+            ort_inputs = {ort_session.get_inputs()[0].name: to_numpy(torch.tensor(image)/255)}
+            ort_outs = ort_session.run(None, ort_inputs)
+            return ort_outs[0]
+            # return Deeplabm.foreground_extraction(image)
+
     #     elif extra_flag.get() == 1:
     #         return segnet.foreground_extraction(image)
 
