@@ -1,32 +1,13 @@
-from tkinter_base import Window
+from guiservice.tkinter_base import Window
 from guiservice.utils import WebCam
 import PIL
 from PIL import Image, ImageTk
+from tkinter import IntVar
 import cv2
 import onnxruntime
 import torch
 import numpy as np
 from ml.models.segmentation.BaseSegmentor import *
-
-cap = WebCam()
-width, height = cap.GetCameraAttributes()
-# DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-my_win = Window('FaceApp', f'{int(width - 100)}x{int(height - 100)}')
-additive_win = my_win.create_child('second')
-# my_model = SSD_Caffe((width, height), '../model_path/ssdcaffe')
-
-# Deeplabm = DeepLabResnet()
-# Deeplabm.load_state_dict(torch.load('../model_path/deeplab_weights.pt', map_location=torch.device(DEVICE)))
-# Deeplabm = Deeplabm.to(DEVICE)
-# Deeplabm.eval()
-#
-model = BodySegmentor('../dplmodel.onnx')
-
-
-# segnet = SegNet()
-# segnet.load_state_dict(torch.load('../model_path/segnet_weights.pt', map_location=torch.device(DEVICE)))
-# segnet = segnet.to(DEVICE)
-# segnet.eval()
 
 
 def frame_to_img(frame_pic):
@@ -36,7 +17,7 @@ def frame_to_img(frame_pic):
     return imgtk
 
 
-def video_preprocessing(vid=cap.camera, flag=additive_win.choice, extra_flag=additive_win.extra_choice):
+def video_preprocessing(vid: cv2.cv2.VideoCapture, flag: IntVar, extra_flag: IntVar):
     ret, image = vid.read()
 
     if flag.get() == 0:
@@ -44,23 +25,18 @@ def video_preprocessing(vid=cap.camera, flag=additive_win.choice, extra_flag=add
     # elif flag.get() == 1:
     #     frame, myface = my_model.detect(image.copy())
     #     return frame
-    elif flag.get() == 2:
-        if extra_flag.get() == 0:
-            return model.segment(image)
-            # return Deeplabm.foreground_extraction(image)
+    # elif flag.get() == 2:
+    #     if extra_flag.get() == 0:
+    #         return model.segment(image)
+    #         # return Deeplabm.foreground_extraction(image)
+    #
+    # #     elif extra_flag.get() == 1:
+    # #         return segnet.foreground_extraction(image)
 
-    #     elif extra_flag.get() == 1:
-    #         return segnet.foreground_extraction(image)
 
-
-def show_frame(window=my_win):
+def show_frame(window: Window):
     frame = video_preprocessing()
     imgtk = frame_to_img(frame)
     window.lmain.imgtk = imgtk
     window.lmain.configure(image=imgtk)
     window.lmain.after(10, show_frame)
-
-
-if __name__ == '__main__':
-    show_frame()
-    my_win.run()
