@@ -21,5 +21,5 @@ additive_win = my_win.create_child('Model Selection')
 # model = BodySegmentor('../dplmodel.onnx')
 
 if __name__ == '__main__':
-    show_frame()
+    show_frame(my_win, cap.camera)
     my_win.run()

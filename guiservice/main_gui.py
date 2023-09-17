@@ -17,26 +17,22 @@ def frame_to_img(frame_pic):
     return imgtk
 
 
-def video_preprocessing(vid: cv2.cv2.VideoCapture, flag: IntVar, extra_flag: IntVar):
-    ret, image = vid.read()
-
+def video_preprocessing(image: np.array, flag: IntVar):
     if flag.get() == 0:
         return image
-    # elif flag.get() == 1:
-    #     frame, myface = my_model.detect(image.copy())
-    #     return frame
-    # elif flag.get() == 2:
-    #     if extra_flag.get() == 0:
-    #         return model.segment(image)
-    #         # return Deeplabm.foreground_extraction(image)
-    #
-    # #     elif extra_flag.get() == 1:
-    # #         return segnet.foreground_extraction(image)
+    elif flag.get() == 1:
+        frame, myface = my_model.detect(image.copy())
+        return frame
+    elif flag.get() == 2:
+        if extra_flag.get() == 0:
+            return model.segment(image)
+            # return Deeplabm.foreground_extraction(image)
 
 
-def show_frame(window: Window):
-    frame = video_preprocessing()
+def show_frame(window: Window, vid: cv2.cv2.VideoCapture):
+    ret, frame = vid.read()
+    # frame = video_preprocessing(image,)
     imgtk = frame_to_img(frame)
     window.lmain.imgtk = imgtk
     window.lmain.configure(image=imgtk)
-    window.lmain.after(10, show_frame)
+    window.lmain.after(10, lambda: show_frame(window, vid))
